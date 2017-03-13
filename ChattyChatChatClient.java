@@ -23,18 +23,19 @@ public class ChattyChatChatClient {
         		)
         {
         	BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        	String userInput = "";
+        	String userInput;
         	String fromServer;
         	String userName = "anonymous";
         	
-        	while((fromServer = in.readLine()) != null || (userInput = stdIn.readLine()) != null)
+        	while((fromServer = in.readLine()) != null)
         	{
-        		out.println(userInput);
+        		
+        		userInput = stdIn.readLine();
+        		if(userInput != null)
+        			out.println(userInput);
         		//print out chats from other users
-        		System.out.println(in.readLine() );
-        		
-        		
-        		
+        		System.out.println(in.readLine());
+      
         	}
         }
         catch (UnknownHostException e) {

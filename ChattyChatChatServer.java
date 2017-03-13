@@ -11,13 +11,13 @@ import java.io.*;
 //http://docs.oracle.com/javase/tutorial/networking/sockets/examples/KKMultiServerThread.java
 //http://docs.oracle.com/javase/tutorial/networking/sockets/examples/KnockKnockProtocol.java
 
-
+//hello
 
 
 public class ChattyChatChatServer {
 
 	//to keep track of all the names in the server
-	//private ArrayList<String> names = new ArrayList();
+	private ArrayList<String> names = new ArrayList();
 	
 	//to keep track of where to send chats
 	private static ArrayList<PrintWriter> writers = new ArrayList<PrintWriter>(); 
@@ -68,6 +68,10 @@ public class ChattyChatChatServer {
 				//code for processing the thread
 				writers.add(out);
 				String name = "anonymous";
+				
+				out.println("WELCOME TO SERVER");
+				
+				
 				
 				while(true)
 				{
