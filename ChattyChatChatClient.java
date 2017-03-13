@@ -23,11 +23,11 @@ public class ChattyChatChatClient {
         		)
         {
         	BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        	String userInput;
+        	String userInput = "";
         	String fromServer;
         	String userName = "anonymous";
         	
-        	while((userInput = stdIn.readLine()) != null)
+        	while((fromServer = in.readLine()) != null || (userInput = stdIn.readLine()) != null)
         	{
         		out.println(userInput);
         		//print out chats from other users
