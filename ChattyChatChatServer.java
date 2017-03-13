@@ -50,6 +50,7 @@ public class ChattyChatChatServer {
 	//class to run the threads for each user
 	public static class ChatThread extends Thread
 	{
+		//private 
 		private Socket socket = null;
 		
 		public ChatThread(Socket socket)
@@ -78,23 +79,22 @@ public class ChattyChatChatServer {
 					String [] checkInput = input.split(" ");
 					
 					//if the user wants to set a nickname
-					if (input.startsWith("/nick"))
+					if (checkInput[0].equals("/nick"))
 					{
 						name = checkInput[1];
 					}
-					else if (checkInput[0] == "/dm")
+					else if (checkInput[0].equals("/dm") )
 					{
 						//protocol for sliding into dms
 					}
 					//break out of loop if user wants to quit
-					else if (checkInput[0] == "/quit")
+					else if (checkInput[0].equals("/quit"))
 					{
 						break;
 					}
 					for (PrintWriter writer: writers)
 					{
-						//writer.println(name + ": " + input);
-						out.println(name + ": " + input);
+						writer.println(name + ": " + input);
 					}
 				}
 				
