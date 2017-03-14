@@ -17,11 +17,12 @@ import java.io.*;
 public class ChattyChatChatServer {
 
 	//to keep track of all the names in the server
-	private ArrayList<String> names = new ArrayList();
+	private static ArrayList<String> names = new ArrayList();
 	
 	//to keep track of where to send chats
 	private static ArrayList<PrintWriter> writers = new ArrayList<PrintWriter>(); 
 	
+	static int ID = 0;
 	
 	public static void main(String [] args) throws IOException {
 		
@@ -36,13 +37,14 @@ public class ChattyChatChatServer {
 		try (ServerSocket serverSocket = new ServerSocket(portNumber)) { 
             while (listening) 
             {
-            	new ChatThread(serverSocket.accept() ).start();
+            	new ChatThread(serverSocket.accept()).start();
 	            //new KKMultiServerThread(serverSocket.accept()).start();
 	        }
 	    } catch (IOException e) {
             System.err.println("Could not listen on port " + portNumber);
             System.exit(-1);
-        }
+
+	    }
 
 		
 	}//END main
@@ -52,6 +54,10 @@ public class ChattyChatChatServer {
 	{
 		//private 
 		private Socket socket = null;
+		private BufferedReader in;
+		private String name;
+		private PrintWriter out;
+		private int LocalID = ID++;
 		
 		public ChatThread(Socket socket)
 		{
@@ -60,14 +66,23 @@ public class ChattyChatChatServer {
 		
 		public void run()
 		{
-			try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-		            BufferedReader in = new BufferedReader(
-		                    new InputStreamReader(socket.getInputStream()));
-					)
+			
+			
+			
+			
+			
+			try
 			{
+				out = new PrintWriter(socket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				name = "anonymous " + LocalID;
+				
+				
+				
 				//code for processing the thread
 				writers.add(out);
-				String name = "anonymous";
+				names.add(name);
+				
 				
 				out.println("WELCOME TO SERVER");
 				
@@ -75,17 +90,24 @@ public class ChattyChatChatServer {
 				
 				while(true)
 				{
+					for(int i = 0; i < names.size(); i++)
+						System.out.println(names.get(i));
+					
 					String input = in.readLine();
-					if (input == null)
+					if (input.equals(null))
 					{
 						return;
 					}
+					
+					System.out.println(input);
 					String [] checkInput = input.split(" ");
 					
 					//if the user wants to set a nickname
 					if (checkInput[0].equals("/nick"))
 					{
 						name = checkInput[1];
+						names.set(LocalID, name);
+						
 					}
 					else if (checkInput[0].equals("/dm") )
 					{
@@ -96,9 +118,12 @@ public class ChattyChatChatServer {
 					{
 						break;
 					}
+					int j = 0;
 					for (PrintWriter writer: writers)
 					{
-						writer.println(name + ": " + input);
+						if(j != LocalID)
+							writer.println(name + ": " + input);
+						j++;
 					}
 				}
 				
