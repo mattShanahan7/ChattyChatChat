@@ -1,4 +1,3 @@
-
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
@@ -17,7 +16,7 @@ import java.io.*;
 public class ChattyChatChatServer {
 
 	//to keep track of all the names in the server
-	private static ArrayList<String> names = new ArrayList();
+	private static ArrayList<String> names = new ArrayList<String>();
 	
 	//to keep track of where to send chats
 	private static ArrayList<PrintWriter> writers = new ArrayList<PrintWriter>(); 
@@ -119,9 +118,10 @@ public class ChattyChatChatServer {
 							//if the name matches the dm argument, then send rest of line to that writer
 							if (names.get(i).equals(checkInput[1]) )
 							{
-								for (int j = 2; j < checkInput.length; i++)
+								writers.get(i).print(name + ": ");
+								for (int j = 2; j < checkInput.length; j++)
 								{
-									writers.get(i).print(checkInput[j]);
+									writers.get(i).print(checkInput[j] + " ");
 								}
 								writers.get(i).println();
 							}
@@ -132,14 +132,19 @@ public class ChattyChatChatServer {
 					//break out of loop if user wants to quit
 					else if (checkInput[0].equals("/quit"))
 					{
+						writers.get(LocalID).println("/quit");						
 						break;
 					}
-					int j = 0;
-					for (PrintWriter writer: writers)
+					//int j = 0;
+					else
 					{
-						if(j != LocalID)
-							writer.println(name + ": " + input);
-						j++;
+						int j = 0;
+						for (PrintWriter writer: writers)
+						{
+							if(j != LocalID)
+								writer.println(name + ": " + input);
+							j++;
+						}
 					}
 				}
 				
@@ -156,5 +161,3 @@ public class ChattyChatChatServer {
 	}//END class ChatThread
 
 }
-
-

@@ -1,4 +1,3 @@
-
 import java.net.*;
 import java.io.*;
 
@@ -78,7 +77,7 @@ public class ChattyChatChatClient {
 
 	}
 
-	public static class KeyboardThread extends Thread
+	public static class ServerThread extends Thread
 	{
 		public void run()
 		{
@@ -89,6 +88,13 @@ public class ChattyChatChatClient {
 				{
 					if((fromServer = in.readLine()) != null)
 					{
+						
+						if (fromServer.equals("/quit"))
+						{
+							System.out.println("Leaving Chat...");
+							break;
+						}
+						
 						System.out.println(fromServer);
 					}
 				}
@@ -101,7 +107,7 @@ public class ChattyChatChatClient {
 		}
 	}
 
-	public static class ServerThread extends Thread
+	public static class KeyboardThread extends Thread
 	{
 		public void run()
 		{
@@ -110,10 +116,20 @@ public class ChattyChatChatClient {
 			{
 				while (true)
 				{
+					
 					if((userInput = stdIn.readLine()) != null)
 					{
+					
+						if (userInput.equals("/quit"))
+						{
+							out.println(userInput);
+							break;
+						}
+						else
+						{
+							out.println(userInput);
+						}
 						//userInput = stdIn.readLine();
-						out.println(userInput);
 					}
 				}
 			} 
